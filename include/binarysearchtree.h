@@ -5,13 +5,18 @@
 extern "C"{
 #endif
 
-    enum BST_CODE{
+
+struct BinarySearchTree{
+    struct bst_node *head;
+    int (*compare)(void *data_1,void *data_2);
+};
+    typedef enum _BST_CODE{
         BST_INSERTED,
         BST_ALREADY_INSERTED,
         BST_NOT_MEMORY,
         BST_NOT_FOUND,
         BST_DELETED
-    };
+    }BST_CODE;
 
     /**
      * Create a Binary Tree
@@ -29,7 +34,7 @@ extern "C"{
      * @param size the size of data
      * @return The code of the insertion status
     */
-    BST_CODE bst_add(BinarySearchTree *bst, void *data, int size);
+    BST_CODE bst_add(struct BinarySearchTree *bst, void *data, int size);
 
     /**
      * Search a item on the tree
@@ -37,7 +42,7 @@ extern "C"{
      * @param void the pointer with the data you searching for
      * @returns a pointer to the data
     */
-    void* bst_search(BinarySearchTree *bst, void *data);
+    void* bst_search(struct BinarySearchTree *bst, void *data);
 
     /**
      * Delete a item from the tree
@@ -45,7 +50,7 @@ extern "C"{
      * @param void the pointer with the data you searching for delete
      * @return The status code of the deletion
     */
-    BST_CODE bst_delete(BinarySearchTree *bst, void *data);
+    BST_CODE bst_delete(struct BinarySearchTree *bst, void *data);
 
     /**
      * Destroy the tree and free the memory

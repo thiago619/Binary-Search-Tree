@@ -1,31 +1,27 @@
-#include "binarysearchtree.hpp"
+#include "binarysearchtree.h"
 #include <malloc.h>
 #include <memory.h>
 
 struct bst_node{
     void *data;
-    bst_node *parent;
-    bst_node *left;
-    bst_node *right;
+    struct bst_node *parent;
+    struct bst_node *left;
+    struct bst_node *right;
 };
 
-enum BST_DIRECTION{
+typedef enum _BST_DIRECTION{
     BST_LEFT,
     BST_RIGHT,
     BST_HERE
-};
-
-struct BinarySearchTree{
-    bst_node *head;
-    int (*compare)(void *data_1,void *data_2);
-};
+}BST_DIRECTION;
 
 struct bst_node* bst_get_min_node(struct bst_node* head);
 struct bst_node* bst_inordersucessor(struct bst_node* head);
-struct bst_node* bst_iterate(BinarySearchTree *bst, struct bst_node* cursor, void* data, BST_DIRECTION *direction);
+struct bst_node* bst_iterate(struct BinarySearchTree *bst, struct bst_node* cursor, void* data, BST_DIRECTION *direction);
 void bst_destroy_recursive(struct bst_node *m_node);
 
-struct bst_node* bst_iterate(BinarySearchTree *bst, struct bst_node *cursor, void* data, BST_DIRECTION *direction){
+
+struct bst_node* bst_iterate(struct BinarySearchTree *bst, struct bst_node *cursor, void* data, BST_DIRECTION *direction){
     if(bst->compare(cursor->data,data) == 1)
     {
         if(cursor->right)
@@ -57,7 +53,7 @@ struct bst_node* bst_iterate(BinarySearchTree *bst, struct bst_node *cursor, voi
 
 struct BinarySearchTree* bst_constructor(int (*compare)(void* data_1, void* data_2))
 {
-    struct BinarySearchTree* bst = (struct BinarySearchTree*)malloc(sizeof(BinarySearchTree));
+    struct BinarySearchTree* bst = (struct BinarySearchTree*)malloc(sizeof(struct BinarySearchTree));
     if(bst){
         bst->head = NULL;
         bst->compare = compare;
@@ -65,7 +61,7 @@ struct BinarySearchTree* bst_constructor(int (*compare)(void* data_1, void* data
     return bst;
 }
 
-enum BST_CODE bst_add(BinarySearchTree *bst, void *data, int size){
+BST_CODE bst_add(struct BinarySearchTree *bst, void *data, int size){
     BST_DIRECTION direction;
     if(!bst->head){
         struct bst_node* newhead = (struct bst_node*)malloc(sizeof(struct bst_node));
@@ -113,7 +109,7 @@ enum BST_CODE bst_add(BinarySearchTree *bst, void *data, int size){
     return BST_NOT_FOUND;
 }
 
-void* bst_search(BinarySearchTree *bst, void *data){
+void* bst_search(struct BinarySearchTree *bst, void *data){
     BST_DIRECTION direction;
     if(!bst->head) return NULL;
     struct bst_node *current = bst_iterate(bst,bst->head,data,&direction);
@@ -124,7 +120,7 @@ void* bst_search(BinarySearchTree *bst, void *data){
     }
 }
 
-enum BST_CODE bst_delete(BinarySearchTree *bst, void *data){
+BST_CODE bst_delete(struct BinarySearchTree *bst, void *data){
     BST_DIRECTION direction;
     if(!bst->head) return BST_NOT_FOUND;
     struct bst_node *current = bst_iterate(bst,bst->head,data,&direction);
@@ -144,7 +140,11 @@ enum BST_CODE bst_delete(BinarySearchTree *bst, void *data){
     {
         struct bst_node *temp;
         struct bst_node *parent;
-        current->left == NULL ? temp = current->right : temp = current->left;
+        if(current->left == NULL){
+            temp = current->right;
+        }else{
+            temp = current->left;
+        }
         parent = current->parent;
         free(current->data);
         memcpy(current,temp,sizeof(struct bst_node));

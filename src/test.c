@@ -1,10 +1,9 @@
-#include "binarysearchtree.hpp"
+#include "binarysearchtree.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory.h>
 #include <string.h>
 #include <cstring>
-using namespace std;
 
 
 int compare(void *data_1, void *data_2)
@@ -24,7 +23,7 @@ int compare(void *data_1, void *data_2)
 
 int main()
 {
-    BinarySearchTree *bst = bst_constructor(compare);
+    struct BinarySearchTree *bst = bst_constructor(compare);
     printf("Sequential insert:\n");
     for(int i = 0;i<=10;i++)
     {
