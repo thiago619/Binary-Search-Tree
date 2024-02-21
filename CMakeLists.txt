@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.29)
 
-project(binarysearchtree VERSION 0.9)
+project(binarysearchtree VERSION 1.0)
 
 add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/binarysearchtree.c)
 
